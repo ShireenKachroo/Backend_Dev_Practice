@@ -11,3 +11,9 @@ def print_conn():
 def get_students():
     return {"students": students}
 
+@app.get("/students/{student_id}")
+def get_student(student_id: int):
+    if student_id in students:
+        return {"student": students[student_id]}
+    else:
+        return {"error": "Student not found"}
