@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 # python -m uvicorn main:app --reload
 
-students = {101: "Shireen", 102: "Anshika", 103: "Dhruvi", 104: "Khushi"}
+students = {101: {"name": "Shireen", "department": "CSE"}, 102: {"name": "Anshika", "department": "ECE"}, 103: {"name": "Dhruvi", "department": "AI/ML"}, 104: {"name": "Khushi", "department": "DS"}}
 app = FastAPI()
 @app.get("/")
 def print_conn():
@@ -17,3 +17,11 @@ def get_student(student_id: int):
         return {"student": students[student_id]}
     else:
         return {"error": "Student not found"}
+
+@app.get("/students/department/{department}")
+def get_students_by_department(department: str):
+    filtered_students = {id: info for id, info in students.items() if info["department"].lower() == department.lower()}
+    if filtered_students:
+        return {"students": filtered_students}
+    else:
+        return {"error": "No students found in this department"} if department == "" else {"error": "Department not found"}
