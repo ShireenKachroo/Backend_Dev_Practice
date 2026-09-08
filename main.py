@@ -25,3 +25,9 @@ def get_students_by_department(department: str):
         return {"students": filtered_students}
     else:
         return {"error": "No students found in this department"} if department == "" else {"error": "Department not found"}
+
+@app.post("/students")
+def add_student(student_data: dict):
+    new_student_id = max(students.keys()) + 1
+    students[new_student_id] = {"name": student_data["name"], "department": student_data["department"]}
+    return {"message": "Student added", "student_id": new_student_id}
