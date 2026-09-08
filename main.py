@@ -38,3 +38,17 @@ def add_student(student_data: Student):
     new_student_id = max(students.keys()) + 1
     students[new_student_id] = student_data.model_dump()
     return {"message": "Student added", "student_id": new_student_id}
+
+# REQUEST VALIDATION:
+# client ---> JSON ---> Pydantic request model ---> Validation ---> your function
+# RESPONSE MODELS:
+# your function ---> Pydantic Response Model ---> validated/structured response ---> client
+class StudentResponse(BaseModel):
+    id: int
+    name: str
+    department: str
+@app.post("/students/response", response_model=StudentResponse)
+def add_student_response(student_data: Student):
+    new_student_id = max(students.keys()) + 1
+    students[new_student_id] = student_data.model_dump()
+    return StudentResponse(id=new_student_id, name=student_data.name, department=student_data.department)
