@@ -26,8 +26,15 @@ def get_students_by_department(department: str):
     else:
         return {"error": "No students found in this department"} if department == "" else {"error": "Department not found"}
 
+# pydantic class for student
+from pydantic import BaseModel
+
+class Student(BaseModel):
+    name: str
+    department: str
+
 @app.post("/students")
-def add_student(student_data: dict):
+def add_student(student_data: Student):
     new_student_id = max(students.keys()) + 1
-    students[new_student_id] = {"name": student_data["name"], "department": student_data["department"]}
+    students[new_student_id] = student_data.model_dump()
     return {"message": "Student added", "student_id": new_student_id}
