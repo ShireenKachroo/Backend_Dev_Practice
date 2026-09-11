@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi import HTTPException  ## HTTP EXCEPTION CODES IN FAST API
+
 # python -m uvicorn main:app --reload
 
 students = {101: {"name": "Shireen", "department": "CSE"}, 102: {"name": "Anshika", "department": "ECE"}, 103: {"name": "Dhruvi", "department": "AI/ML"}, 104: {"name": "Khushi", "department": "DS"}}
@@ -16,7 +18,7 @@ def get_student(student_id: int):
     if student_id in students:
         return {"student": students[student_id]}
     else:
-        return {"error": "Student not found"}
+        raise HTTPException(status_code = 404 , detail = "Student not found")
 
 @app.get("/students/department/{department}")
 def get_students_by_department(department: str):
@@ -24,8 +26,7 @@ def get_students_by_department(department: str):
     if filtered_students:
         return {"students": filtered_students}
     else:
-        return {"error": "No students found in this department"} if department == "" else {"error": "Department not found"}
-
+        raise HTTPException(status_code = 404, detail = "Department not found!")
 # pydantic class for student
 from pydantic import BaseModel
 
@@ -33,7 +34,7 @@ class Student(BaseModel):
     name: str
     department: str
 
-@app.post("/students")
+@app.post("/students", status_code = 201)
 def add_student(student_data: Student):
     new_student_id = max(students.keys()) + 1
     students[new_student_id] = student_data.model_dump()
