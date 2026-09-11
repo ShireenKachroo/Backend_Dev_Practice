@@ -120,3 +120,17 @@ async def log_requests(request: Request, call_next):
     response = await call_next(request)
 
     return response
+
+# BASIC AUTHENTICATION IN FASTAPI
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+security = HTTPBasic()
+
+@app.get("/protected")
+def protected(credentials: HTTPBasicCredentials = Depends(security)):
+    if credentials.username != "Shireen" or credentials.password != "1234":
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid username or password"
+        )
+
+    return {"message": "Welcome Shireen!"}
