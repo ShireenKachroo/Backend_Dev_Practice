@@ -98,4 +98,14 @@ def delete_student(student_id : int):
     else:
         del students[student_id]
         return {"message: Student deleted successfully!"}
-        
+
+
+## DEPENDENCY INJECTION
+from fastapi import Depends
+
+def get_current_user():
+    return "Shireen"
+
+@app.get("/profile")
+def getProfile(user = Depends(get_current_user)):
+    return user
