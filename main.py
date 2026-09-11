@@ -53,3 +53,49 @@ def add_student_response(student_data: Student):
     new_student_id = max(students.keys()) + 1
     students[new_student_id] = student_data.model_dump()
     return StudentResponse(id=new_student_id, name=student_data.name, department=student_data.department)
+
+# PATCH in HTTP
+from typing import Optional
+
+class StudentUpdate(BaseModel):
+    name: Optional[str] = None
+    department: Optional[str] = None
+
+
+@app.patch("/students/{student_id}", response_model=StudentResponse)
+def update_student(student_id: int, student_data: StudentUpdate):
+
+    # 1. Check if student exists
+    if student_id not in students:
+        raise HTTPException(
+            status_code=404,
+            detail="Student not found"
+        )
+
+    # 2. Check whether user actually sent anything
+    if not student_data.model_dump(exclude_unset=True):
+        raise HTTPException(
+            status_code=400,
+            detail="No fields provided for update"
+        )
+
+    # 3. Update only the fields that were sent
+    update_data = student_data.model_dump(exclude_unset=True)
+
+    students[student_id].update(update_data)
+
+    # 4. Return updated student
+    return {
+        "id": student_id,
+        **students[student_id]
+    }
+
+## HTTP DELETE METHOD
+@app.delete("/students/{student_id}")
+def delete_student(student_id : int):
+    if student_id not in students:
+        raise HTTPException(status_code = 404, detail = "Student not found!")
+    else:
+        del students[student_id]
+        return {"message: Student deleted successfully!"}
+        
