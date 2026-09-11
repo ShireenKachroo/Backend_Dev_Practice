@@ -109,3 +109,14 @@ def get_current_user():
 @app.get("/profile")
 def getProfile(user = Depends(get_current_user)):
     return user
+
+## middleware
+from fastapi import Request
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    print(request.method, request.url)
+
+    response = await call_next(request)
+
+    return response
