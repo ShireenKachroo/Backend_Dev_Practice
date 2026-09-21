@@ -110,3 +110,4 @@ ON s.department_id = d.id;
 ALTER TABLE Students
 DROP COLUMN department;
 
+CREATE INDEX idx_students_department ON Students(department_id);
