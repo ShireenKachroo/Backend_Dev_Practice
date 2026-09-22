@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from database import engine, Base
 from routers.students import router as student_router
 from routers.departments import router as department_router
-
+from routers.auth import router as auth_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -27,3 +27,4 @@ def health_check():
 
 app.include_router(student_router)
 app.include_router(department_router)
+app.include_router(auth_router)
