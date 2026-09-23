@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LOGIN -->
+    <div id="login-section">
+        <h1>Student Management</h1>
+        <p class="subtitle">Login to continue</p>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Username"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
+
+        <button onclick="login()">Login</button>
+
+        <p id="login-message"></p>
+    </div>
+
+
+    <!-- DASHBOARD -->
+    <div id="dashboard-section" class="hidden">
+
+        <div class="header">
+            <div>
+                <h1>Students</h1>
+                <p id="welcome-message"></p>
+            </div>
+
+            <button
+                class="logout-button"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+        </div>
+
+
+        <!-- ADMIN FORM -->
+        <div id="admin-section" class="hidden">
+
+            <h2>Add Student</h2>
+
+            <div class="form-row">
+
+                <input
+                    type="number"
+                    id="student-id"
+                    placeholder="Student ID"
+                >
+
+                <input
+                    type="text"
+                    id="student-name"
+                    placeholder="Student Name"
+                >
+
+                <input
+                    type="number"
+                    id="department-id"
+                    placeholder="Department ID"
+                >
+
+                <button onclick="addStudent()">
+                    Add
+                </button>
+
+            </div>
+
+            <p id="student-message"></p>
+
+        </div>
+
+
+        <!-- STUDENT TABLE -->
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department ID</th>
+                    <th id="action-header">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="student-table">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
